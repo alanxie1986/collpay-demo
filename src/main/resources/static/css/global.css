@@ -1,0 +1,42 @@
+@charset "UTF-8";
+html {
+	font-size: 62.5%;
+	/* 10÷16=62.5% */
+}
+
+body {
+	font-family: "MicrosoftYaHei, arial, verdana, sans-serif";
+	font-size: 14px;
+	font-size: 1.4rem;
+	/* 12÷10=1.2 */
+	color: #333;
+}
+
+a:focus,
+a:hover {
+	text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea,
+.button {
+	outline: none;
+}
+
+.bg-white {
+	background: #FFF;
+}
+
+.bg-gray {
+	background: #EFEFEF;
+}
+
+.interval {
+	height: 4px;
+}
+
+header {
+	margin-top: 10px;
+}

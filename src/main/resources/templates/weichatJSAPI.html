@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>微信JSAPI</title>
+    <script type="text/javascript" src="https://wx.gtimg.com/third/jquery/jquery-1.7.min.js"></script>
+    <script   th:inline="javascript" >
+        /*<![CDATA[*/
+        var payData =  {
+            "appId":[[${ wxPayData.get('appId') }]] ,
+            "timeStamp": [[${ wxPayData.get('timeStamp') }]] ,
+            "nonceStr":[[${ wxPayData.get('nonceStr') }]]  ,
+            "package":[[${ wxPayData.get('package') }]]  ,
+            "signType":[[${ wxPayData.get('signType') }]] ,
+            "paySign": [[${ wxPayData.get('paySign') }]]
+        } ;
+        function onBridgeReady(){
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',  payData,
+                function(res){
+                    if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                        // 使用以上方式判断前端返回,微信团队郑重提示：
+                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                    }
+                });
+        }
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady();
+        }
+
+        /*]]>*/
+    </script>
+
+</head>
+
+<body th:switch="${result.server_code}">
+
+<div th:case="'SUCCESS'">
+    订单信息：<br>
+    支付方式：   <span th:switch="${payType}">
+                        <a th:case="'1001'" th:text="微信二维码"></a>
+                        <a th:case="'1003'" th:text="支付宝二维码"></a>
+                        <a th:case="'3002'" th:text="银联二维码"></a>
+                </span> <br>
+    商品名称：<span th:text="${result.data.commodity_name}"></span> <br>
+    目标商户: <span th:text="${merchantName}"></span> <br>
+    订单号：<span th:text="${result.data.order_no}"></span> <br>
+    支付金额：<span th:text="|${result.data.amount} (分:人民币)|"></span> <br>
+    手续费：<span th:text="|${result.data.charge_fee} (分:人民币)|"></span> <br>
+</div>
+
+<div th:case="*">
+    <span th:text="尝试生成支付订单失败！请后退稍后再试！"></span> <br>
+    <span th:text="|失败原因:${result.message}|"></span> <br>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<!--告诉浏览器准备接受一个 HTML 文档-->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--默认编码UTF-8-->
+		<meta charset="UTF-8">
+		<!--默认采用webkit模式-->
+		<meta name="renderer" content="webkit" />
+		<!--IE=edge告诉IE使用最新的引擎渲染网页，chrome=1则可以激活Chrome Frame-->
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<!--(设置确保适当的绘制和触屏缩放)-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--控制状态栏显示样式-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--手机号码不被显示为拨号链接-->
+		<meta name="format-detection" content="telephone=yes" />
+		<!--Email不被显示为发送Email链接-->
+		<meta name="format-detection" content="email=no">
+		<!--关键字-->
+		<meta name="keywords" content="" />
+		<!--描述信息-->
+		<meta name="description" content="" />
+		<!--作者-->
+		<meta name="author" content="lgsp_Harold-Hua">
+		<title>订单详情</title>
+		<!--重置部分默认样式-->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<!--bootstrap框架样式-->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<!--公共样式-->
+		<link rel="stylesheet" type="text/css" href="css/global.css" />
+		<!--私有样式-->
+		<link rel="stylesheet" type="text/css" href="css/order_details.css" />
+		<!--公共js-->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!--私有js-->
+	</head>
+
+	<body>
+		<header>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<a href="history"><span class="glyphicon glyphicon-chevron-left"></span></a>
+					</div>
+					<div class="col-xs-8">
+						<p class="text-center title">订单详情</p>
+					</div>
+					<div class="col-xs-2"></div>
+				</div>
+			</div>
+		</header>
+
+		<section>
+			<div class="container-fluid">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<tr>
+							<th>订单号</th>
+							<td><span th:text="${order.orderNo}"></span></td>
+						</tr>
+						<tr>
+							<th>商品名</th>
+							<td><span th:text="${order.commodityName}"></span></td>
+						</tr>
+						<tr>
+							<th>金额</th>
+							<td><span th:text="${order.priceDisplay}"></span></td>
+
+						</tr>
+						<tr>
+							<th>支付方式</th>
+							<td><span th:text="${order.payTypeDisplay}"></span></td>
+
+						</tr>
+						<tr>
+							<th>支付发起时间</th>
+							<td><span th:text="${order.createTimeDisplay}"></span></td>
+
+						</tr>
+						<tr>
+							<th>支付完成时间</th>
+							<td><span th:text="${order.endTimeDisplay}"></span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+
+		</footer>
+
+	</body>
+
+</html>
