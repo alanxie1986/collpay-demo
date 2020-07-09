@@ -1,0 +1,17 @@
+header a span {
+	color: #FF3B30;
+}
+
+p.title {
+	font-weight: 700;
+}
+
+p.text {
+	margin: 30px 0;
+	font-size: 16px;
+}
+
+p.text-center span {
+	color: #FF3B30;
+	font-size: 30px;
+}

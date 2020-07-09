@@ -1,0 +1,39 @@
+.container-fluid {
+	margin-top: 125px;
+}
+
+p.text {
+	margin-top: 18px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+p.text span {
+	color: #FF3B30;
+	font-size: 24px;
+}
+
+p a,
+p button {
+	padding: 5px 15px;
+	border: 1px solid #dd6572;
+	border-radius: 3px;
+	color: #dd6572;
+	background-color: #fff;
+	font-weight: 600;
+}
+
+p a:hover,
+p button:hover {
+	color: #dd6572;
+	text-decoration: none;
+}
+
+.success,
+.fail {
+	display: none;
+}
+textarea {
+	opacity: 0;
+	position: absolute;
+}

@@ -1,0 +1,19 @@
+header a span {
+	color: #FF3B30;
+}
+
+p.title {
+	font-weight: 700;
+}
+
+table {
+	width: 100%;
+}
+
+table th {
+	text-align: right;
+}
+
+table td {
+	padding-top: 10px;
+}
