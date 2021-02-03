@@ -42,33 +42,12 @@
 	</head>
 
 	<body  >
-		<header th:if="${result=='SUCCESS'}">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-2">
-						<a href="./index.html"><span class="glyphicon glyphicon-chevron-left"></span></a>
-					</div>
-					<div class="col-xs-8"  th:switch="${payType}">
-						<p class="text-center title" th:case="'1001'" th:text="请打开微信应用扫描"></p>
-						<p class="text-center title" th:case="'1003'" th:text="请打开支付宝应用扫描"></p>
-						<p class="text-center title" th:case="'3002'" th:text="请打开云闪付应用扫描"></p>
-					</div>
-					<div class="col-xs-2"></div>
-				</div>
-			</div>
-		</header>
+
 
 		<section th:if="${result=='SUCCESS' }">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12">
 
-						<p th:if="${amount!=null }" class="text-center text">您将支付的金额是：￥<span th:text="|${amount}|"></span></p>
+			<div class="container-fluid" th:utext="${data.pay_data}">
 
-						<img class="img-responsive center-block" th:src="|/qrCode?qrCode=${data.pay_data}|" />
-						<p class="text-center text">（长按二维码保存到相册）</p>
-					</div>
-				</div>
 			</div>
 		</section>
 

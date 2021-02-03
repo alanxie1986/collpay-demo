@@ -59,8 +59,6 @@ public class DemoPayController {
     //购买demo首页
     @RequestMapping({"/index.html", "/"})
     public String index(ModelMap modelMap) {
-        List<Commodity> list = commodityService.findAll();
-        modelMap.addAttribute("commoditys", list);
         return "open";
     }
 
@@ -90,34 +88,31 @@ public class DemoPayController {
         //保存订单
         paymentService.saveOrder(order);
 
+
         switch (payTypeVal) {
 
-            case ALI_NATIVE: //支付宝扫码
-                setQrCodePage(order, modelMap);
-                break;
-
             case ALI_WAP: //支付宝跳转页面
-                response.setContentType("text/html;charset=UTF-8");
-                getHtmlContent(order,modelMap);
-                return "jump2pay";
-
-            case WX_NATIVE: //微信扫码
-                setQrCodePage(order, modelMap);
-                break;
-
-            case WX_WAP: //微信公众号方式需要提供下面的参数给页面js脚本
-                response.setContentType("text/html;charset=UTF-8");
-                getHtmlContent(order,modelMap);
-                return "jump2pay";
-
-            case UNION_QR: //银联扫码
-                setQrCodePage(order, modelMap);
-                break;
 
             case UNION_WAP: //银联 跳转页面
-                response.setContentType("text/html;charset=UTF-8");
-                getHtmlContent(order,modelMap);
-                return "jump2pay";
+
+            case WX_WAP: //微信公众号方式需要提供下面的参数给页面js脚本
+                return  getHtmlContent(order,modelMap,response);
+
+            case ALI_NATIVE: //支付宝扫码
+
+            case WX_NATIVE: //微信扫码
+
+            case UNION_QR: //银联扫码
+
+            case PIN_DUO_DUO: //银联扫码
+
+            case JD_QR:
+
+            case WX_PRIVATE:
+
+            case ALI_PRIVATE:
+
+                return setQrCodePage(order, modelMap,response);
 
         }
 
@@ -132,21 +127,34 @@ public class DemoPayController {
     }
 
     //通过在页面输出一个from 跳转网页支付方式
-    private void getHtmlContent(DemoOrder order, ModelMap modelMap) {
-        Map<String, String> paramMap = paymentService.constructParam(order);
-        modelMap.addAttribute("collpayApiUrl",collpayApiUrl);
-        modelMap.addAttribute("paramMap",paramMap);
-    }
-
-    private void setQrCodePage(DemoOrder order, ModelMap modelMap) {
+    private String getHtmlContent(DemoOrder order, ModelMap modelMap, HttpServletResponse response) {
+//        response.setContentType("text/html;charset=UTF-8");
+//        Map<String, String> paramMap = paymentService.constructParam(order);
+//        modelMap.addAttribute("collpayApiUrl",collpayApiUrl);
+//        modelMap.addAttribute("paramMap",paramMap);
+//        return "jump2pay";
         APIData apiData = paymentService.pay(order);
         if (!apiData.getServer_code().equals(APICode.SUCCESS)) {
             setFail(apiData.getMessage(), modelMap);
-            return;
         }
-        modelMap.addAttribute("payType", order.getPayType());
         modelMap.addAttribute(RESULT, "SUCCESS");
         modelMap.addAttribute("data", apiData);
+        return "jumpToPay";
+    }
+
+    private String setQrCodePage(DemoOrder order, ModelMap modelMap, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        APIData apiData = paymentService.pay(order);
+        modelMap.addAttribute("payType", order.getPayType() );
+        modelMap.addAttribute("data", apiData );
+        if (!apiData.getServer_code().equals(APICode.SUCCESS)) {
+            setFail(apiData.getMessage(), modelMap);
+        }else if(order.getPayType()!=5001){
+            modelMap.addAttribute("order", order);
+            modelMap.addAttribute("amount", order.getPrice()/100d);
+        }
+        modelMap.addAttribute(RESULT, "SUCCESS");
+        return "qr_code";
     }
 
     //把字符串链接数据转换成二维码显示
@@ -231,16 +239,19 @@ public class DemoPayController {
 
         try {
             //更新订单状态
-            String orderNo = params.get("merchant_no");
-            String status = params.get("trade_status");
+            String orderNo = params.get("merchant_no"); //商户系统订单
+            String status = params.get("trade_status"); //支付状态结果
+            String newpay24No = params.get("newpay24_no"); //上游newpay24的订单号
             DemoOrder order = paymentService.getDemoByNo(orderNo);
             switch (status) {
                 case "COMPLETE":
                     order.setStatus(DemoOrder.Status.COMPLETE);
+                    order.setNewpayNo(newpay24No);
                     order.setEndTime(LocalDateTime.now(ZoneId.of("UTC+8")));
                     break;
                 case "FAIL":
                     order.setStatus(DemoOrder.Status.FAIL);
+                    order.setNewpayNo(newpay24No);
                     order.setEndTime(LocalDateTime.now(ZoneId.of("UTC+8")));
                     break;
             }

@@ -13,6 +13,9 @@ public enum  PayType {
     JD_WAP(3004,"京东在线"),
     UNION_QR(3002,"银联扫码"),
     UNION_WAP(3003,"银联网关"),
+    PIN_DUO_DUO(5001,"拼多多"),
+    WX_PRIVATE(1007,"微信个人码"),
+    ALI_PRIVATE(1008,"支付宝个人码"),
     ;
 
     private Integer code;
