@@ -16,6 +16,7 @@ public enum  PayType {
     PIN_DUO_DUO(5001,"拼多多"),
     WX_PRIVATE(1007,"微信个人码"),
     ALI_PRIVATE(1008,"支付宝个人码"),
+    BANK_CARD(4001,"银行卡"),
     ;
 
     private Integer code;

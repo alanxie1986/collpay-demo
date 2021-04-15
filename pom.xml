@@ -78,6 +78,12 @@
 			<version>4.1.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.58</version>
+		</dependency>
+
 
 		<!--- QR code  -->
 		<dependency>

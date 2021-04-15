@@ -195,22 +195,23 @@
         <div class="bg-gray wrap_money">
             <span>金额(￥)</span>
             <div class="row">
-                <div class="col-xs-12 hidden-md hidden-lg"><input type="text" name="price"  value="1.0" /></div>
+                <div class="col-xs-12 hidden-md hidden-lg"><input type="text" name="price"  th:value="${value}" /></div>
             </div>
         </div>
     </div>
     <div class="interval bg-gray"></div>
     <div class="container-fluid bg-white">
         <div class="wrap_payment choose">
-            <label class="radio">支付宝H5<input type="radio" value="1004" name="payType" checked><i></i></label>
-            <label class="radio">支付宝二维码<input type="radio" value="1003" name="payType" checked><i></i></label>
+            <label class="radio">支付宝H5<input type="radio" value="1004" name="payType" onclick="showPayerName()"><i></i></label>
+            <label class="radio">支付宝二维码<input type="radio" value="1003" name="payType"  onclick="showPayerName()"><i></i></label>
 
-            <label class="radio">支付宝个人码<input type="radio" value="1008" name="payType"><i></i></label>
+            <label class="radio">支付宝个人码<input type="radio" value="1008" name="payType" checked onclick="showPayerName()"><i></i></label>
+            <label class="radio">银行卡<input id="bankcardInput" type="radio" value="4001" name="payType" onclick="showPayerName()"><i></i></label>
 
-            <label class="radio">微信H5<input type="radio" value="1002" name="payType"><i></i></label>
-            <label class="radio">微信二维码<input type="radio" value="1001" name="payType"><i></i></label>
+<!--            <label class="radio">微信H5<input type="radio" value="1002" name="payType"><i></i></label>-->
+<!--            <label class="radio">微信二维码<input type="radio" value="1001" name="payType"><i></i></label>-->
 
-            <label class="radio">微信个人码<input type="radio" value="1007" name="payType"><i></i></label>
+<!--            <label class="radio">微信个人码<input type="radio" value="1007" name="payType"><i></i></label>-->
 
 <!--            <label class="radio">银联H5<input type="radio" value="3003" name="payType"><i></i></label>-->
 <!--            <label class="radio">银联二维码<input type="radio" value="3002" name="payType"><i></i></label>-->
@@ -221,6 +222,12 @@
         </div>
     </div>
     <div class="interval bg-gray"></div>
+    <div class="container-fluid bg-white" style="display: none" id="payerNameDiv">
+        <div class="wrap_remarks">
+            <span>支付人姓名：</span>
+            <input type="text" name="payerName" value="张三" placeholder="请添加支付人姓名" />
+        </div>
+    </div>
     <div class="container-fluid bg-white">
         <div class="wrap_remarks">
             <span>备注：</span>
@@ -238,6 +245,16 @@
 <footer>
 
 </footer>
+<script>
+    function showPayerName() {
+        var payerInput = document.getElementById('bankcardInput');
+        if(payerInput.checked){
+            $('#payerNameDiv').show();
+        }else {
+            $('#payerNameDiv').hide();
+        }
+    }
+</script>
 
 </body>
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<!--告诉浏览器准备接受一个 HTML 文档-->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--默认编码UTF-8-->
+		<meta charset="UTF-8">
+		<!--默认采用webkit模式-->
+		<meta name="renderer" content="webkit" />
+		<!--IE=edge告诉IE使用最新的引擎渲染网页，chrome=1则可以激活Chrome Frame-->
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<!--(设置确保适当的绘制和触屏缩放)-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--控制状态栏显示样式-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--手机号码不被显示为拨号链接-->
+		<meta name="format-detection" content="telephone=yes" />
+		<!--Email不被显示为发送Email链接-->
+		<meta name="format-detection" content="email=no">
+		<!--关键字-->
+		<meta name="keywords" content="" />
+		<!--描述信息-->
+		<meta name="description" content="" />
+		<!--作者-->
+		<meta name="author" content="lgsp_Harold-Hua">
+		<title>Pay</title>
+		<!--重置部分默认样式-->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<!--bootstrap框架样式-->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<!--公共样式-->
+		<link rel="stylesheet" type="text/css" href="css/global.css" />
+		<!--私有样式-->
+		<link rel="stylesheet" type="text/css" href="css/qr_code.css" />
+		<!--公共js-->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!--私有js-->
+	</head>
+
+	<body  >
+		<header th:if="${result=='SUCCESS'}">
+			请按照以下银行信息进行转账：<br>
+			支付人姓名：   <span th:text="${data.payerName}"></span> <br>
+			银行名称：   <span th:text="${data.bankName}"></span> <br>
+			银行账号：<span th:text="${data.bankAccount}"></span> <br>
+			账号名称：<span th:text="${data.accountName}"></span> <br>
+			应支付金额：<span th:text="${data.amount}"></span>
+			<span th:if="${data.amountChanged}">
+				<strong style="color: red">请注意支付金额发生了修正</strong>
+			</span>
+			<br>
+		</header>
+
+
+
+		<section th:if="${result!='SUCCESS'}">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12">
+
+						<p class="text-center text"> 发起支付失败,请后退重新再试 </p>
+						<p class="text-center text" th:text="${msg}"></p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+
+		</footer>
+
+	</body>
+
+</html>

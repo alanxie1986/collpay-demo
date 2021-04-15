@@ -1,15 +1,13 @@
 package demo.newpay.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
-import demo.newpay.model.APIData;
-import demo.newpay.model.Commodity;
-import demo.newpay.model.DemoOrder;
-import demo.newpay.model.PayType;
+import demo.newpay.model.*;
 import demo.newpay.service.CommodityService;
 import demo.newpay.service.PaymentService;
 import demo.newpay.util.MatrixToImageWriter;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -59,12 +58,16 @@ public class DemoPayController {
     //购买demo首页
     @RequestMapping({"/index.html", "/"})
     public String index(ModelMap modelMap) {
+        double value =  Math.random() ;
+        DecimalFormat df = new DecimalFormat("0.00");
+        String str = df.format(value);
+        modelMap.addAttribute("value",str);
         return "open";
     }
 
     //下单链接
     @PostMapping("/payment")
-    public String payment(Integer payType, Double price, HttpServletResponse response, ModelMap modelMap) {
+    public String payment(Integer payType, Double price, String payerName, HttpServletResponse response, ModelMap modelMap) {
         PayType payTypeVal = PayType.getByCode(payType);
         if (payTypeVal == null) {
             return setFail("payType 参数错误", modelMap);
@@ -77,6 +80,7 @@ public class DemoPayController {
         order.setPrice(amount);
         order.setPayType(payType);
         order.setCreateTime(LocalDateTime.now(ZoneId.of("UTC")));
+        order.setPayerName(payerName);
         //生成订单号
         String orderNo = new StringBuilder("DEMO")
                 .append(System.currentTimeMillis())
@@ -97,6 +101,11 @@ public class DemoPayController {
 
             case WX_WAP: //微信公众号方式需要提供下面的参数给页面js脚本
                 return  getHtmlContent(order,modelMap,response);
+
+
+            case BANK_CARD:
+
+                return setBankCardPage(order,modelMap,response);
 
             case ALI_NATIVE: //支付宝扫码
 
@@ -156,6 +165,23 @@ public class DemoPayController {
         modelMap.addAttribute(RESULT, "SUCCESS");
         return "qr_code";
     }
+
+    private String setBankCardPage(DemoOrder order, ModelMap modelMap, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        APIData apiData = paymentService.pay(order);
+        if (!apiData.getServer_code().equals(APICode.SUCCESS)) {
+            setFail(apiData.getMessage(), modelMap);
+        }
+        modelMap.addAttribute("payType", order.getPayType() );
+        String bankDataStr = apiData.getPay_data();
+        BankCardData bankCardData = JSON.parseObject(bankDataStr,BankCardData.class);
+        Double amount = apiData.getAmount()/100d;
+        bankCardData.setAmount(amount);
+        modelMap.addAttribute("data", bankCardData );
+        modelMap.addAttribute(RESULT, "SUCCESS");
+        return "bank_card";
+    }
+
 
     //把字符串链接数据转换成二维码显示
     @RequestMapping("/qrCode")

@@ -23,6 +23,8 @@ public class DemoOrder {
     private LocalDateTime createTime; //订单创建时间
     private LocalDateTime endTime; //订单完结时间
 
+    private String payerName; // 银行卡方式必填
+
     private String priceDisplay;
     private String createTimeDisplay;
     private String endTimeDisplay;
@@ -129,5 +131,13 @@ public class DemoOrder {
            return  payType.getName();
         }
         return "-";
+    }
+
+    public String getPayerName() {
+        return payerName;
+    }
+
+    public void setPayerName(String payerName) {
+        this.payerName = payerName;
     }
 }
